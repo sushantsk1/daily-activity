@@ -1,0 +1,30 @@
+name: Daily Activity Update
+
+on:
+schedule:
+# Runs every day at 14:30 UTC (8:00 PM IST)
+- cron: '30 14 * * *'
+workflow_dispatch: # Lets you run it manually to test
+
+permissions:
+contents: write
+
+jobs:
+update-readme:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout repository
+uses: actions/checkout@v4
+
+- name: Update README timestamp
+run: |
+echo "# Daily Activity Log" > README.md
+echo "Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> README.md
+
+- name: Commit and push changes
+run: |
+git config --local user.email "Sushantkulkarni406@gmail.com"
+git config --local user.name "sushantsk1"
+git add README.md
+git commit -m "chore: daily activity update"
+git push
